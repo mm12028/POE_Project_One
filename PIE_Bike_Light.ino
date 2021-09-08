@@ -19,14 +19,15 @@ states prior_state, state;            // Global variables to store the prior and
 uint32_t flashing_time;                 // Global variable to store the time that YELLOW_LED last changed state
 uint16_t flashing_count;                // Global variable to store the number of times YELLOW_LED has changed 
                                       //   states
-uint32_t debounce_time;
-bool SW1_went_back_low;
-bool SW2_went_back_low;
+uint32_t debounce_time;               // Global variable to store the time since SW1 or SW2 was read
+bool SW1_went_back_low;               // Global variable to indicate that SW1 returned low after going high
+bool SW2_went_back_low;               // Global variable to indicate that SW2 returned low after going high
+bool SW1_high;                        // Global variable to store whether SW1 is high
+bool SW2_high;                        // Global variable to store whether SW is high
+
 
 void all_on() {
   uint32_t t;                           // Local variable to store the current value of the millis timer
-  bool SW1_high;
-  bool SW2_high;
 
   if (state != prior_state) {         // If we are entering the state, do initialization stuff
     prior_state = state;
@@ -37,9 +38,9 @@ void all_on() {
 
   // Perform state tasks
   // Check for state transitions
-  t = millis();
-  if (t >= debounce_time + DEBOUNCE_INTERVAL) {
-    SW1_high = digitalRead(SW1) == HIGH;
+  t = millis();                     // Get the current value of the millis timer
+  if (t >= debounce_time + DEBOUNCE_INTERVAL) { // Sees if DEBOUNCE_INTERVAL millisecodnds have elapsed since debounce_time,
+    SW1_high = digitalRead(SW1) == HIGH;        
     SW2_high = digitalRead(SW2) == HIGH;
     if (SW1_went_back_low && SW1_high) {
       state = ALL_FLASHING;
@@ -55,12 +56,6 @@ void all_on() {
     debounce_time = t;
   }
   
-//  if (digitalRead(SW1) == HIGH) {
-//    state = ALL_FLASHING;
-//  } else if (digitalRead(SW2) == HIGH) {
-//    state = BOUNCING_LIGHT;
-//  }
-  
   if (state != prior_state) {         // If we are leaving the state, do clean up stuff
     digitalWrite(GREEN_LED, LOW);
     digitalWrite(YELLOW_LED, LOW);
@@ -70,9 +65,7 @@ void all_on() {
 
 void all_flashing() {
   uint32_t t;                           // Local variable to store the current value of the millis timer
-  bool SW1_high;
-  bool SW2_high;
-  
+
   if (state != prior_state) {         // If we are entering the state, do initialization stuff
     prior_state = state;
     digitalWrite(GREEN_LED, HIGH);
@@ -118,9 +111,7 @@ void all_flashing() {
 
 void all_off() {
   uint32_t t;                           // Local variable to store the current value of the millis timer
-  bool SW1_high;
-  bool SW2_high;
-  
+
   if (state != prior_state) {         // If we are entering the state, do initialization stuff
     prior_state = state;
     digitalWrite(GREEN_LED, LOW);
@@ -159,9 +150,7 @@ void all_off() {
 
 void alternate_flashing() {
   uint32_t t;                           // Local variable to store the current value of the millis timer
-  bool SW1_high;
-  bool SW2_high;
-  
+
   if (state != prior_state) {         // If we are entering the state, do initialization stuff
     prior_state = state;
     digitalWrite(GREEN_LED, HIGH);
@@ -207,9 +196,7 @@ void alternate_flashing() {
 
 void bouncing_light() {
   uint32_t t;                           // Local variable to store the current value of the millis timer
-  bool SW1_high;
-  bool SW2_high;
-    
+
   if (state != prior_state) {         // If we are entering the state, do initialization stuff
     prior_state = state;
     digitalWrite(GREEN_LED, HIGH);
