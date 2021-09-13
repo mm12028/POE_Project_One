@@ -41,8 +41,8 @@ void all_on() {
   // Perform state tasks (there are no state tasks for this mode because all of the LEDs just stay on)
   // Check for state transitions
   t = millis();                     // Get the current value of the millis timer
-  if (t >= debounce_time + DEBOUNCE_INTERVAL) { // Only sample the tactile switch at a DEBOUNCE_INTERVAL millisecond interval
-    SW1_high = digitalRead(SW1) == HIGH;        
+  if (t >= debounce_time + DEBOUNCE_INTERVAL) { // Only sample the tactile switch at a DEBOUNCE_INTERVAL
+    SW1_high = digitalRead(SW1) == HIGH;        //   millisecond interval
     SW2_high = digitalRead(SW2) == HIGH;
     if (SW1_went_back_low && SW1_high) {        // If SW1 has been pressed, move to the ALL_FLASHING state
       state = ALL_FLASHING;
@@ -58,8 +58,8 @@ void all_on() {
     debounce_time = t;                          // Set debounce_time to the current value of the millis timer
   }
   
-  if (state != prior_state) {         // If we are leaving the state, do clean up stuff (in this case turn LEDs all off)
-    digitalWrite(GREEN_LED, LOW);
+  if (state != prior_state) {         // If we are leaving the state, do clean up stuff 
+    digitalWrite(GREEN_LED, LOW);     //    (in this case turn LEDs all off)
     digitalWrite(YELLOW_LED, LOW);
     digitalWrite(RED_LED, LOW);
   }
@@ -78,16 +78,16 @@ void all_flashing() {
 
   // Perform state tasks
   t = millis();
-  if (t >= flashing_time + BLINK_INTERVAL) {              // If BLINK_INTERVAL milliseconds have elapsed since blink_time,
-    digitalWrite(GREEN_LED, !digitalRead(GREEN_LED));     //   toggle the state of all of the LEDs and
-    digitalWrite(YELLOW_LED, !digitalRead(YELLOW_LED));   //   set flashing_time to the current value of the millis timer
-    digitalWrite(RED_LED, !digitalRead(RED_LED));
+  if (t >= flashing_time + BLINK_INTERVAL) {              // If BLINK_INTERVAL milliseconds have elapsed
+    digitalWrite(GREEN_LED, !digitalRead(GREEN_LED));     //   since blink_time, toggle the state of all 
+    digitalWrite(YELLOW_LED, !digitalRead(YELLOW_LED));   //   of the LEDs and set flashing_time to the 
+    digitalWrite(RED_LED, !digitalRead(RED_LED));         //   current value of the millis timer.
     flashing_time = t;
   }
 
   // Check for state transitions
-  if (t >= debounce_time + DEBOUNCE_INTERVAL) {          // Only sample the tactile switch at a DEBOUNCE_INTERVAL millisecond interval
-    SW1_high = digitalRead(SW1) == HIGH;
+  if (t >= debounce_time + DEBOUNCE_INTERVAL) {          // Only sample the tactile switch at a 
+    SW1_high = digitalRead(SW1) == HIGH;                 //   DEBOUNCE_INTERVAL millisecond interval
     SW2_high = digitalRead(SW2) == HIGH;
     if (SW1_went_back_low && SW1_high) {
       state = ALL_OFF;                                  // If SW1 has been pressed, move to ALL_OFF state
@@ -100,12 +100,12 @@ void all_flashing() {
     } else if (!SW2_went_back_low && !SW2_high) {
       SW2_went_back_low = true;
     }
-    debounce_time = t;                                  // Set debounce_time to the current value of the millis timer
-  }
+    debounce_time = t;                                  // Set debounce_time to the current value of the 
+  }                                                     //    millis timer
   
 
-  if (state != prior_state) {         // If we are leaving the state, do clean up stuff (in this case, turn all of the LEDs off)
-    digitalWrite(GREEN_LED, LOW);
+  if (state != prior_state) {         // If we are leaving the state, do clean up stuff 
+    digitalWrite(GREEN_LED, LOW);     //    (in this case, turn all of the LEDs off)
     digitalWrite(YELLOW_LED, LOW);
     digitalWrite(RED_LED, LOW);
   }
@@ -126,33 +126,33 @@ void all_off() {
 
   // Check for state transitions
   t = millis();
-  if (t >= debounce_time + DEBOUNCE_INTERVAL) {      // Only sample the tactile switch at a DEBOUNCE_INTERVAL millisecond interval
-    SW1_high = digitalRead(SW1) == HIGH;
+  if (t >= debounce_time + DEBOUNCE_INTERVAL) {      // Only sample the tactile switch at a 
+    SW1_high = digitalRead(SW1) == HIGH;             //     DEBOUNCE_INTERVAL millisecond interval
     SW2_high = digitalRead(SW2) == HIGH;
     if (SW1_went_back_low && SW1_high) {
-      state = ALTERNATE_FLASHING;                     // If SW1 has been pressed, move to ALTERNATE_FLASHING state
-      SW1_went_back_low = false;
+      state = ALTERNATE_FLASHING;                     // If SW1 has been pressed, move to 
+      SW1_went_back_low = false;                      //    ALTERNATE_FLASHING state
     } else if (!SW1_went_back_low && !SW1_high) {
       SW1_went_back_low = true;
     } else if (SW2_went_back_low && SW2_high) {
-      state = ALL_FLASHING;                           // If SW2 has been pressed, move to ALL_FLASHING state
-      SW2_went_back_low = false;
+      state = ALL_FLASHING;                           // If SW2 has been pressed, move to
+      SW2_went_back_low = false;                      //     ALL_FLASHING state
     } else if (!SW2_went_back_low && !SW2_high) {
       SW2_went_back_low = true;
     }
-    debounce_time = t;                              // Set debounce_time to the current value of the millis timer
-  }
+    debounce_time = t;                              // Set debounce_time to the current value 
+  }                                                 // of the millis timer
 
-  if (state != prior_state) {         // If we are leaving the state, do clean up stuff (in this case, turn all LEDs off)
-    digitalWrite(GREEN_LED, LOW);
-    digitalWrite(YELLOW_LED, LOW);
+  if (state != prior_state) {         // If we are leaving the state, do clean up stuff 
+    digitalWrite(GREEN_LED, LOW);     // (in this case, turn all LEDs off)
+    digitalWrite(YELLOW_LED, LOW);  
     digitalWrite(RED_LED, LOW);
   }
 }
 
 void alternate_flashing() {
-  uint32_t t;                           // Local variable to store the current value of the millis timer
-
+  uint32_t t;                           // Local variable to store the current value of the
+                                        //     millis timer
   if (state != prior_state) {         // If we are entering the state, do initialization stuff
     prior_state = state;
     digitalWrite(GREEN_LED, HIGH);   //Turn the green and red LEDs on, and turn the yellow LED off
@@ -163,34 +163,34 @@ void alternate_flashing() {
 
   // Perform state tasks
   t = millis();                               // Get the current value of the millis timer
-  if (t >= flashing_time + BLINK_INTERVAL) {             // If BLINK_INTERVAL milliseconds have elapsed since blink_time,
-    digitalWrite(GREEN_LED, !digitalRead(GREEN_LED));    //  toggle the state of all the LEDs and
-    digitalWrite(YELLOW_LED, !digitalRead(YELLOW_LED));  //  set flashing_time to the current value of the millis timer
-    digitalWrite(RED_LED, !digitalRead(RED_LED));
-    flashing_time = t;
+  if (t >= flashing_time + BLINK_INTERVAL) {             // If BLINK_INTERVAL milliseconds have
+    digitalWrite(GREEN_LED, !digitalRead(GREEN_LED));    //  elapsed since blink_time, toggle the 
+    digitalWrite(YELLOW_LED, !digitalRead(YELLOW_LED));  //  state of all the LEDs and set 
+    digitalWrite(RED_LED, !digitalRead(RED_LED));        //  flashing_time to the current value 
+    flashing_time = t;                                   //  of the millis timer
   }
 
   // Check for state transitions
-  if (t >= debounce_time + DEBOUNCE_INTERVAL) {   // Only sample the tactile switch at a DEBOUNCE_INTERVAL millisecond interval
-    SW1_high = digitalRead(SW1) == HIGH;
+  if (t >= debounce_time + DEBOUNCE_INTERVAL) {   // Only sample the tactile switch at a 
+    SW1_high = digitalRead(SW1) == HIGH;          //    DEBOUNCE_INTERVAL millisecond interval
     SW2_high = digitalRead(SW2) == HIGH;
     if (SW1_went_back_low && SW1_high) {
-      state = WAVING_LIGHT;                      // If SW1 has been pressed, move to WAVING_LIGHT state
-      SW1_went_back_low = false;
+      state = WAVING_LIGHT;                      // If SW1 has been pressed, move to 
+      SW1_went_back_low = false;                 //   WAVING_LIGHT state
     } else if (!SW1_went_back_low && !SW1_high) {
       SW1_went_back_low = true;
     } else if (SW2_went_back_low && SW2_high) {
-      state = ALL_OFF;                              // If SW1 has been pressed, move to ALL_OFF state
-      SW2_went_back_low = false;
+      state = ALL_OFF;                              // If SW1 has been pressed, move to 
+      SW2_went_back_low = false;                    // ALL_OFF state
     } else if (!SW2_went_back_low && !SW2_high) {
       SW2_went_back_low = true;
     }
-    debounce_time = t;                             // Set debounce_time to the current value of the millis timer
-  }
+    debounce_time = t;                             // Set debounce_time to the current value 
+  }                                                //   of the millis timer
   
 
-  if (state != prior_state) {         // If we are leaving the state, do clean up stuff (in this case, turn all LEDs off)
-    digitalWrite(GREEN_LED, LOW);
+  if (state != prior_state) {         // If we are leaving the state, do clean up stuff 
+    digitalWrite(GREEN_LED, LOW);     //    (in this case, turn all LEDs off)
     digitalWrite(YELLOW_LED, LOW);
     digitalWrite(RED_LED, LOW);
   }
@@ -209,29 +209,29 @@ void waving_light() {
   }                                   //    In doing this, we can have different phases of LED toggling and 
                                       //    allow the lights to "wave" from green to red.
   // Perform state tasks
-  t = millis();                                                         // Get the current value of the millis timer
-  if (t >= flashing_time + BLINK_INTERVAL && flashing_count%3 == 1) {   // If BLINK_INTERVAL milliseconds have elapsed since blink_time, 
-    digitalWrite(GREEN_LED, !digitalRead(GREEN_LED));                   //  and we're in the first of the three phases of LED toggling,
-    digitalWrite(YELLOW_LED, !digitalRead(YELLOW_LED));                 // toggle the state of the green and yellow LEDs, 
-    flashing_time = t;                                                  // set flashing_time to the current value of the millis timer
-    flashing_count++;                                                   // and increase the flashing count by one
+  t = millis();                                                       // Get the current value of the millis 
+  if (t >= flashing_time + BLINK_INTERVAL && flashing_count%3 == 1) { //    timer. If BLINK_INTERVAL milliseconds 
+    digitalWrite(GREEN_LED, !digitalRead(GREEN_LED));                 //    have elapsed since blink_time, and 
+    digitalWrite(YELLOW_LED, !digitalRead(YELLOW_LED));               //    we're in the first of the three phases 
+    flashing_time = t;                                                //    of LED toggling, toggle the state of 
+    flashing_count++;                                                 //    the green and yellow LEDs, set and
+  }                                                                   //    increase the flashing count by one
+  if (t >= flashing_time + BLINK_INTERVAL && flashing_count%3 == 2) {   
+    digitalWrite(YELLOW_LED, !digitalRead(YELLOW_LED));                //  If we're in the 2nd of the 3 phases of 
+    digitalWrite(RED_LED, !digitalRead(RED_LED));                      //     LED toggling, toggle the state of the
+    flashing_time = t;                                                 //     yellow and red LEDs,  and increase the 
+    flashing_count++;                                                  //     flashing count by one
   }
-  if (t >= flashing_time + BLINK_INTERVAL && flashing_count%3 == 2) {  // If BLINK_INTERVAL milliseconds have elapsed since blink_time, 
-    digitalWrite(YELLOW_LED, !digitalRead(YELLOW_LED));                //  and we're in the second of the three phases of LED toggling,
-    digitalWrite(RED_LED, !digitalRead(RED_LED));                      // toggle the state of the yellow and red LEDs, 
-    flashing_time = t;                                                 // set flashing_time to the current value of the millis timer
-    flashing_count++;                                                  // and increase the flashing count by one
-  }
-  if (t >= flashing_time + BLINK_INTERVAL && flashing_count%3 == 0) { // If BLINK_INTERVAL milliseconds have elapsed since blink_time, 
-    digitalWrite(RED_LED, !digitalRead(RED_LED));                     //  and we're in the third of the three phases of LED toggling,
-    digitalWrite(GREEN_LED, !digitalRead(GREEN_LED));                 // toggle the state of the red and green LED,s
-    flashing_time = t;                                                // set flashing_time to the current value of the millis timer
-    flashing_count++;                                                 // and increase the flashing count by one
+  if (t >= flashing_time + BLINK_INTERVAL && flashing_count%3 == 0) { // If we're in the third of the three phases of 
+    digitalWrite(RED_LED, !digitalRead(RED_LED));                     //    LED toggling,  toggle the state of the red 
+    digitalWrite(GREEN_LED, !digitalRead(GREEN_LED));                 //    and green LEDs, set flashing_time to the 
+    flashing_time = t;                                                //    current value of the millis timer
+    flashing_count++;                                                 //    and increase the flashing count by one
   }
 
 
-  if (t >= debounce_time + DEBOUNCE_INTERVAL) {     // Only sample the tactile switch at a DEBOUNCE_INTERVAL millisecond interval
-    SW1_high = digitalRead(SW1) == HIGH;
+  if (t >= debounce_time + DEBOUNCE_INTERVAL) {     // Only sample the tactile switch at a DEBOUNCE_INTERVAL 
+    SW1_high = digitalRead(SW1) == HIGH;            //    millisecond interval
     SW2_high = digitalRead(SW2) == HIGH;
     if (SW1_went_back_low && SW1_high) {
       state = ALL_ON;                               // If SW1 has been pressed, move to ALL_ON state
